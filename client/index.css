@@ -1,0 +1,94 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1170px;
+    padding: 0 15px;
+    margin: auto;
+    position: relative;
+    z-index: 2;
+}
+
+.fa-facebook {
+    transition: 1s;
+  }
+
+  .fa-facebook:hover {
+    color: rgb(66, 103, 178);
+  }
+
+  .fa-square-x-twitter {
+    transition: 1s;
+  }
+
+  .fa-square-x-twitter:hover {
+    color: rgb(29, 161, 242);
+  }
+
+  .fa-square-google-plus {
+    transition: 1s;
+  }
+
+  .fa-square-google-plus:hover {
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: conic-gradient( 
+      rgb(219, 68, 55) 25%,
+      rgb(66, 133, 244) 25% 50%, 
+      rgb(15, 157, 88) 50% 75%,
+      rgb(244, 180, 0) 75%);
+  }
+
+  .fa-square-pinterest {
+    transition: 1s;
+  }
+
+  .fa-square-pinterest:hover {
+    color: rgb(230, 0, 35);
+  }
+
+  .fa-square-instagram {
+    transition: 1s;
+  }
+
+  .fa-square-instagram:hover {
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: linear-gradient(225deg, 
+      rgb(5, 10, 230), 
+      rgb(88, 81, 216),  
+      rgb(131, 58, 180), 
+      rgb(193, 53, 132),
+      rgb(225, 48, 108),
+      rgb(253, 36, 76),
+      rgb(245, 96, 64),
+      rgb(247, 119, 55),
+      rgb(252, 175, 69),
+      rgb(255, 220, 128));
+  }
+
+  .fa-linkedin {
+    transition: 1s;
+  }
+
+  .fa-linkedin:hover {
+    color: rgb(0, 119, 181);
+  }
+
+  .fa-tiktok {
+    transition: 1s;
+  }
+
+  .fa-tiktok:hover {
+    color: #fff;
+    text-shadow: -1.5px -1.5px rgba(0, 242, 234, 0.7), 
+                  1.5px 1.5px rgba(255, 0 ,80, 0.7);
+  }
