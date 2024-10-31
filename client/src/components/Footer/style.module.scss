@@ -1,7 +1,9 @@
 .footer {
     background-color: rgb(0, 0, 0);
     padding: 15px 0;
-    margin-top: 40px;
+    width: 100%;
+    position: relative;
+    z-index: 4;
 
     .footer-icons-wrap {
         width: 320px;
