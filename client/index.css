@@ -1,14 +1,13 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
 
 html, body {
-  height: 100%;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
 }
 
 #root {
@@ -24,26 +23,22 @@ html, body {
     padding: 0 15px;
     margin: auto;
     position: relative;
-    z-index: 2;
+    z-index: 10;
+}
+
+Link {
+  cursor: pointer;
+}
+
+header, footer {
+  flex-shrink: 0;
+  height: auto;
 }
 
 main {
-  flex: 1;
-  background: url('./public/bg.jpg') no-repeat center;
-  background-size: cover;
+  flex: 1 0 auto;
 }
 
-main::before {
-  content: '';
-  display: block;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.55);
-  z-index: 3;
-}
 
 .fa-facebook {
     transition: 1s;
@@ -51,6 +46,14 @@ main::before {
 
   .fa-facebook:hover {
     color: rgb(66, 103, 178);
+  }
+
+  .fa-vk {
+    transition: 1s;
+  }
+
+  .fa-vk:hover {
+    color: rgb(51, 99, 196);
   }
 
   .fa-square-x-twitter {

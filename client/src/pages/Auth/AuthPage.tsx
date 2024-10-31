@@ -10,3 +10,4 @@ const AuthPage:FC = () => {
 };
 
 export default AuthPage;
+

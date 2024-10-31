@@ -1,111 +1,44 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { FC } from "react";
 import style from './style.module.scss';
 
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window?: () => Window;
-}
 
-const drawerWidth = 240;
-const navItems = [
-    { name: 'Главная', path: '/staff' },
-    { name: 'Меню', path: '/menu' },
-    { name: 'Контакты', path: '/contact' }
-];
-
-export default function NavBar(props: Props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
-
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        Esenin Cafe
-      </Typography>
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item.name} disablePadding>
-          <ListItemButton component={Link} to={item.path} sx={{ textAlign: 'center' }}>
-            <ListItemText primary={item.name} />
-          </ListItemButton>
-        </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
-
+export const NavBar:FC = () => {
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar component="nav">
-        <Toolbar className={style.bg}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            CAFE Esenin
-          </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                {navItems.map((item) => (
-                    <Button key={item.name} component={Link} to={item.path} sx={{ color: '#fff' }}>
-                        {item.name}
-                    </Button>
-                ))}
-            </Box>
-        </Toolbar>
-      </AppBar>
-      <nav>
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
-    </Box>
-  );
-}
+    <div className={style["header-wrap"]}>
+      <div className="container">
+            <div className={style["navbar-wrap"]}>
+                <div className={style.logo}>
+                    <p>Кафе-Бар</p>
+                    <img src="../../../../public/logo.png" alt="Логотип" className={style["logo-image"]} />
+                </div>
+                <nav className={style["menu"]}>
+                    <ul className={style["menu-list"]}>
+                        <li className={style["menu-list-item"]}>
+                            <a href="/main">Главная</a>
+                        </li>
+                        <li className={style["menu-list-item"]}>
+                            <a href="/menu">Меню</a>
+                        </li>
+                        <li className={style["menu-list-item"]}>
+                            <a href="/contact-us">Контакты</a>
+                        </li>
+                        <li className={style["menu-list-item"]}>
+                            <a href="#">Новости</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div className={style['phone-card']}>
+                  <div className={style['phone-image']}>
+                    <a href="#">
+                      <i className="fa-solid fa-phone"></i>
+                    </a>
+                  </div>
+                  <div className={style['phone-description']}>
+                    <p className={style['text-phone']}>Бронирование столика:</p>
+                    <p className={style['number']}>+375 (29) 111-99-96</p>
+                  </div>
+                </div> 
+            </div> 
+        </div>
+    </div>
+  )}

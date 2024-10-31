@@ -8,38 +8,18 @@ const Footer = () => {
                 <nav className={style['footer-wrap']}>
                     <ul className={style['footer-icons']}>
                         <li className={style['footer-item']}>
-                            <a href="https://www.facebook.com">
-                                <i className="fa-brands fa-facebook"></i>
-                            </a>
-                        </li>
-                        <li className={style['footer-item']}>
-                            <a href="https://twitter.com/">
-                                <i className="fa-brands fa-square-x-twitter"></i>
-                            </a>
-                        </li>
-                        <li className={style['footer-item']}>
-                            <a href="https://www.google.com">
-                                <i className="fa-brands fa-square-google-plus"></i>
-                            </a>
-                        </li>
-                        <li className={style['footer-item']}>
-                            <a href="https://www.pinterest.com">
-                                <i className="fa-brands fa-square-pinterest"></i>
-                            </a>
-                        </li>
-                        <li className={style['footer-item']}>
-                            <a href="https://www.instagram.com">
+                            <a href="https://www.instagram.com/esenin.cafe.bar/">
                                 <i className="fa-brands fa-square-instagram"></i>
                             </a>
                         </li>
                         <li className={style['footer-item']}>
-                            <a href="https://ru.linkedin.com">
-                                <i className="fa-brands fa-linkedin"></i>
+                            <a href="https://vk.com/eseninmalinovka">
+                                <i className="fa-brands fa-vk"></i>
                             </a>
                         </li>
                         <li className={style['footer-item']}>
-                            <a href="https://www.tiktok.com/ru-RU/">
-                                <i className="fa-brands fa-tiktok"></i>
+                            <a href="https://www.facebook.com/eseninmalinovka/">
+                                <i className="fa-brands fa-facebook"></i>
                             </a>
                         </li>
                     </ul>

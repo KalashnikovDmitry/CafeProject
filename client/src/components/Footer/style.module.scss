@@ -13,18 +13,16 @@
 
             .footer-icons {
                 display: flex;
-                justify-content: space-between;
+                justify-content: space-around;
                 flex-direction: row;
                 flex-wrap: wrap;
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
 
                 .footer-item {
                     transition: 0.7s;
-                    margin: 0 5px; 
-
-                    &:last-child {
-                        margin: 0;
-                    }
-
+                     
                     &:hover {
                         transform: scale(1.2) rotate(360deg);
                     }
@@ -44,6 +42,7 @@
         font-size: 12px;
         font-weight: 400;
         color: rgba(255, 255, 255, 0.5);
+        margin: 0;
     }
     
 }
