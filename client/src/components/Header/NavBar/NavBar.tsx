@@ -23,7 +23,7 @@ export const NavBar:FC = () => {
                             <a href="/contact-us">Контакты</a>
                         </li>
                         <li className={style["menu-list-item"]}>
-                            <a href="#">Новости</a>
+                            <a href="/news">Новости</a>
                         </li>
                     </ul>
                 </nav>

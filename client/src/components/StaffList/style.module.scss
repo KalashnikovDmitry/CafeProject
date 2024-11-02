@@ -1,0 +1,72 @@
+.staff-list-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .staff-list-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .staff-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .staff-list-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: transform 0.2s;
+  }
+  
+  .staff-list-item:hover {
+    transform: translateY(-2px);
+  }
+  
+  .staff-avatar {
+    flex-shrink: 0;
+    margin-right: 15px;
+  }
+  
+  .staff-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .staff-details {
+    flex-grow: 1;
+  }
+  
+  .staff-name {
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+  }
+  
+  .staff-role {
+    margin: 5px 0;
+    color: #777;
+  }
+  
+  .staff-email {
+    font-size: 0.9em;
+    color: #555;
+  }
+  
+  .no-staff-message {
+    text-align: center;
+    color: #999;
+    font-size: 1.1em;
+  }

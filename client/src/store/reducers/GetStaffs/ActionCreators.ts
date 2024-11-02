@@ -6,8 +6,14 @@ import { staffSlice } from "./StaffSlice";
 
 export const fetchStaffs = () => async (dispatch: AppDispatch) => {
     try {
+        const token = sessionStorage.getItem('token');
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
         dispatch(staffSlice.actions.staffsFetching())
-        const response = await axios.get<IStaff[]>('http://localhost:5000/staff')
+        const response = await axios.get<IStaff[]>('http://localhost:5000/admin/staffs', config);
         dispatch(staffSlice.actions.staffsFetchingSuccess(response.data))
 
         return response.data;

@@ -22,4 +22,9 @@ export class StaffService {
         const user = await this.staffRepository.findOne({where: {email}, include: {all: true}})
         return user;
     }
+
+    async getStaffNameById(id: number) {
+        const userName = await this.staffRepository.findOne({where: {id}, include: {all: true}})
+        return userName.name;
+    }
 }

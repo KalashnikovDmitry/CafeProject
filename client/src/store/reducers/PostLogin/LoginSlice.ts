@@ -9,7 +9,7 @@ interface LoginStaffState {
 }
 
 const initialState: LoginStaffState = {
-    staff: {email: '', password: ''},
+    staff: {email: '', password: '', token: ''},
     isLoading: false,
     error: ''
 }

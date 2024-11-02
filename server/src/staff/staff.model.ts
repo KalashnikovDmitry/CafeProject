@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Model, Column, Table, HasMany, DataType } from 'sequelize-typescript';
-// import { Order } from '../order/order.model';
+import { Booking } from 'src/booking/booking.model';
+import { News } from 'src/news/news.model';
 
 interface StaffCreationAttrs {
     name: string;
@@ -37,6 +38,9 @@ export class Staff extends Model<Staff, StaffCreationAttrs> {
   @Column({type: DataType.STRING, allowNull: false})
   password: string;
 
-//   @HasMany(() => Order)
-//   orders: Order[];
+  @HasMany(() => News)
+  news: News[]
+
+  @HasMany(() => Booking)
+  booking: Booking[]
 }

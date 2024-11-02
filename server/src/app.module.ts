@@ -4,6 +4,13 @@ import { ConfigModule } from "@nestjs/config";
 import { Staff } from "./staff/staff.model";
 import { StaffModule } from "./staff/staff.module";
 import { AuthModule } from './auth/auth.module';
+import { NewsModule } from './news/news.module';
+import { News } from "./news/news.model";
+import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { BookingModule } from './booking/booking.module';
+import * as path from 'path';
+import { Booking } from "./booking/booking.model";
 
 @Module({
     controllers: [],
@@ -12,6 +19,9 @@ import { AuthModule } from './auth/auth.module';
         ConfigModule.forRoot({
             envFilePath: `.${process.env.NODE_ENV}.env`
         }),
+        ServeStaticModule.forRoot({
+            rootPath: path.resolve(__dirname, "static"),
+        }),
         SequelizeModule.forRoot({
           dialect: 'postgres',
           host: process.env.POSTGRES_HOST,
@@ -19,11 +29,14 @@ import { AuthModule } from './auth/auth.module';
           username: process.env.POSTGRES_USER,
           password: process.env.POSTGRES_PASSWORD,
           database: process.env.POSTGRES_DB,
-          models: [Staff],
+          models: [Staff, News, Booking],
           autoLoadModels: true
         }),
         StaffModule,
         AuthModule,
+        NewsModule,
+        FilesModule,
+        BookingModule,
       ],
 })
 export class AppModule {}

@@ -14,6 +14,9 @@ export const fetchLoginStaff = (loginData: LoginData) => async (dispatch: AppDis
     try {
         dispatch(loginStaffSlice.actions.loginStaffFetching())
         const response = await axios.post<ILoginStaff>('http://localhost:5000/auth/login', loginData)
+        const token = response.data.token;
+        sessionStorage.setItem('token', token);
+        // localStorage.setItem('token', token);
         dispatch(loginStaffSlice.actions.loginStaffFetchingSuccess(response.data));
 
         return response.data;

@@ -1,18 +1,19 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CreateStaffDto } from './dto/create-staff.dto';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { StaffService } from './staff.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Staff } from './staff.model';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('Сотрудники')
-@Controller('staff')
+@Controller('admin')
 export class StaffController {
 
     constructor(private staffService: StaffService) {}
 
     @ApiOperation({summary: 'Получение списка сотрудников'})
     @ApiResponse({status: 200, type: [Staff]})
-    @Get()
+    @UseGuards(JwtAuthGuard)
+    @Get('/staffs')
     getAll() {
         return this.staffService.getAllStaffs();
     }
