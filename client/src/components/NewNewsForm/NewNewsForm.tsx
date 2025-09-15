@@ -1,10 +1,17 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
-import { useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useForm, Controller } from 'react-hook-form';
+import { observer } from 'mobx-react-lite';
+import { useNewsStore } from '../../stores/StoreContext';
 import { useNavigate } from 'react-router-dom';
-import styles from './style.module.scss';
-import { fetchPostNews } from '../../store/reducers/PostNews/ActionCreators';
+import {
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  Alert,
+  CircularProgress,
+} from '@mui/material';
 
 interface newNewsFormInputs {
   title: string;
@@ -12,63 +19,126 @@ interface newNewsFormInputs {
   image: string;
 }
 
-const newNewsForm: React.FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<newNewsFormInputs>();
-  const dispatch = useAppDispatch();
-  const { isLoading, error } = useAppSelector(state => state.newsReducer);
+const newNewsForm: React.FC = observer(() => {
+  const { control, handleSubmit, formState: { errors } } = useForm<newNewsFormInputs>();
+  const newsStore = useNewsStore();
   const navigate = useNavigate();
 
-  const onSubmit = (data: newNewsFormInputs) => {
-    dispatch(fetchPostNews(data)).then(() => {
-      if (!error) {
-        navigate('/admin/staffs'); 
-      }
-    });
+  const onSubmit = async (data: newNewsFormInputs) => {
+    try {
+      await newsStore.postNews(data);
+      navigate('/admin/staffs'); 
+    } catch (error) {
+      // Error is already handled in the store
+    }
   };
 
   return (
-    <div className={styles.formContainer}>
-      <h2 className={styles.title}>Добавить новость</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Название</label>
-          <input
-            type="text"
-            {...register('title', { required: 'Введите название новости' })}
-            placeholder="Введите название новости"
-            className={styles.input}
-          />
-          {errors.title && <p className={styles.errorMessage}>{errors.title.message}</p>}
-        </div>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minHeight: '100vh',
+        py: 4,
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          p: 4,
+          width: '100%',
+          maxWidth: 500,
+          borderRadius: 2,
+        }}
+      >
+        <Typography variant="h4" component="h1" gutterBottom align="center">
+          Добавить новость
+        </Typography>
 
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Описание</label>
-          <textarea
-            {...register('content', { required: 'Введите новость' })}
-            placeholder="Введите новость"
-            className={styles.input}
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
+          <Controller
+            name="title"
+            control={control}
+            rules={{ required: 'Введите название новости' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Название"
+                margin="normal"
+                error={!!errors.title}
+                helperText={errors.title?.message}
+                placeholder="Введите название новости"
+              />
+            )}
           />
-          {errors.content && <p className={styles.errorMessage}>{errors.content.message}</p>}
-        </div>
 
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Изображение</label>
-          <input
-            type="file"
-            {...register('image', { required: 'Выберите изображение' })}
-            placeholder="Выберите изображение"
-            className={styles.input}
-            
+          <Controller
+            name="content"
+            control={control}
+            rules={{ required: 'Введите новость' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Описание"
+                multiline
+                rows={4}
+                margin="normal"
+                error={!!errors.content}
+                helperText={errors.content?.message}
+                placeholder="Введите новость"
+              />
+            )}
           />
-          {errors.image && <p className={styles.errorMessage}>{errors.image.message}</p>}
-        </div>
-        <button type="submit" disabled={isLoading} className={styles.submitButton}>
-          {isLoading ? 'Загрузка...' : 'Отправить'}
-        </button>
-        {error && <p className={styles.generalErrorMessage}>{error}</p>}
-      </form>
-    </div>
+
+          <Controller
+            name="image"
+            control={control}
+            rules={{ required: 'Выберите изображение' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Изображение"
+                type="file"
+                margin="normal"
+                error={!!errors.image}
+                helperText={errors.image?.message}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  accept: 'image/*',
+                }}
+              />
+            )}
+          />
+
+          {newsStore.postNewsError && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {newsStore.postNewsError}
+            </Alert>
+          )}
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            disabled={newsStore.isPostNewsLoading}
+            sx={{ mt: 3, py: 1.5 }}
+          >
+            {newsStore.isPostNewsLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              'Отправить'
+            )}
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
   );
-};
+});
 
 export default newNewsForm;

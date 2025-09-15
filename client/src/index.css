@@ -1,0 +1,39 @@
+/* Global CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+main {
+  margin: 0;
+  padding: 0;
+}
+
+footer {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+}
+
+/* Ensure no white space at bottom */
+body::after {
+  content: '';
+  display: block;
+  height: 0;
+  overflow: hidden;
+}

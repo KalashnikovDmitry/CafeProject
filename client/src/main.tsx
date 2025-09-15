@@ -1,18 +1,18 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
-import { Provider } from 'react-redux'
-import { setupStore } from './store/store.ts'
+import { StoreProvider } from './stores/StoreContext'
+import { rootStore } from './stores/RootStore'
+import './index.css'
 
-const store = setupStore();
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
   createRoot(rootElement).render(
     <StrictMode>
-      <Provider store={store}>
+      <StoreProvider store={rootStore}>
         <App />
-      </Provider>
+      </StoreProvider>
     </StrictMode>
   );
 } else {

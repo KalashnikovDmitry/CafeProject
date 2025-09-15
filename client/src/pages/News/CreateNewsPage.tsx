@@ -1,12 +1,13 @@
-import { FC } from "react"
-import NewNewsForm from "../../components/NewNewsForm/NewNewsForm";
+import React from 'react';
+import { Box } from '@mui/material';
+import NewNewsForm from '../../components/NewNewsForm/NewNewsForm';
 
-const CreateNewsPage:FC = () => {
-    return (
-        <div>
-            <NewNewsForm />
-        </div>
-    );
+const CreateNewsPage: React.FC = () => {
+  return (
+    <Box>
+      <NewNewsForm />
+    </Box>
+  );
 };
 
 export default CreateNewsPage;

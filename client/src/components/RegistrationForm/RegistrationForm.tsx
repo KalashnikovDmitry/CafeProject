@@ -1,9 +1,17 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useForm, Controller } from 'react-hook-form';
+import { observer } from 'mobx-react-lite';
+import { useAuthStore } from '../../stores/StoreContext';
 import { useNavigate } from 'react-router-dom';
-import { fetchRegistrationStaff } from '../../store/reducers/PostRegistration/ActionCreators';
-import styles from './style.module.scss';
+import {
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  Alert,
+  CircularProgress,
+} from '@mui/material';
 
 interface RegistrationFormInputs {
   email: string;
@@ -13,86 +21,154 @@ interface RegistrationFormInputs {
   role: string;
 }
 
-const RegistrationForm: React.FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<RegistrationFormInputs>();
-  const dispatch = useAppDispatch();
-  const { isLoading, error } = useAppSelector(state => state.loginStaffReducer);
+const RegistrationForm: React.FC = observer(() => {
+  const { control, handleSubmit, formState: { errors } } = useForm<RegistrationFormInputs>();
+  const authStore = useAuthStore();
   const navigate = useNavigate();
 
-  const onSubmit = (data: RegistrationFormInputs) => {
-    dispatch(fetchRegistrationStaff(data)).then(() => {
-      if (!error) {
-        navigate('/auth/login'); 
-      }
-    });
+  const onSubmit = async (data: RegistrationFormInputs) => {
+    try {
+      await authStore.register(data);
+      navigate('/auth/login'); 
+    } catch (error) {
+      // Error is already handled in the store
+    }
   };
 
   return (
-    <div className={styles.formContainer}>
-      <h2 className={styles.title}>Регистрация</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Имя и Фамилия</label>
-          <input
-            type="text"
-            {...register('name', { required: 'Введите имя и фамилию' })}
-            placeholder="Введите ваше имя и фамилию"
-            className={styles.input}
-          />
-          {errors.name && <p className={styles.errorMessage}>{errors.name.message}</p>}
-        </div>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minHeight: '100vh',
+        py: 4,
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          p: 4,
+          width: '100%',
+          maxWidth: 500,
+          borderRadius: 2,
+        }}
+      >
+        <Typography variant="h4" component="h1" gutterBottom align="center">
+          Регистрация
+        </Typography>
 
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Email</label>
-          <input
-            type="email"
-            {...register('email', { required: 'Введите email' })}
-            placeholder="Введите ваш email"
-            className={styles.input}
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
+          <Controller
+            name="name"
+            control={control}
+            rules={{ required: 'Введите имя и фамилию' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Имя и Фамилия"
+                margin="normal"
+                error={!!errors.name}
+                helperText={errors.name?.message}
+                placeholder="Введите ваше имя и фамилию"
+              />
+            )}
           />
-          {errors.email && <p className={styles.errorMessage}>{errors.email.message}</p>}
-        </div>
 
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Телефон</label>
-          <input
-            type="text"
-            {...register('phone', { required: 'Введите номер телефона' })}
-            placeholder="Введите ваш номер телефона"
-            className={styles.input}
+          <Controller
+            name="email"
+            control={control}
+            rules={{ required: 'Введите email' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Email"
+                type="email"
+                margin="normal"
+                error={!!errors.email}
+                helperText={errors.email?.message}
+                placeholder="Введите ваш email"
+              />
+            )}
           />
-          {errors.phone && <p className={styles.errorMessage}>{errors.phone.message}</p>}
-        </div>
 
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Введите должность</label>
-          <input
-            type="text"
-            {...register('role', { required: 'Введите должность' })}
-            placeholder="Введите должность"
-            className={styles.input}
+          <Controller
+            name="phone"
+            control={control}
+            rules={{ required: 'Введите номер телефона' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Телефон"
+                margin="normal"
+                error={!!errors.phone}
+                helperText={errors.phone?.message}
+                placeholder="Введите ваш номер телефона"
+              />
+            )}
           />
-          {errors.role && <p className={styles.errorMessage}>{errors.role.message}</p>}
-        </div>
 
-        <div className={styles.inputContainer}>
-          <label className={styles.label}>Пароль</label>
-          <input
-            type="password"
-            {...register('password', { required: 'Введите пароль' })}
-            placeholder="Введите ваш пароль"
-            className={styles.input}
+          <Controller
+            name="role"
+            control={control}
+            rules={{ required: 'Введите должность' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Должность"
+                margin="normal"
+                error={!!errors.role}
+                helperText={errors.role?.message}
+                placeholder="Введите должность"
+              />
+            )}
           />
-          {errors.password && <p className={styles.errorMessage}>{errors.password.message}</p>}
-        </div>
 
-        <button type="submit" disabled={isLoading} className={styles.submitButton}>
-          {isLoading ? 'Загрузка...' : 'Зарегистрироваться'}
-        </button>
-        {error && <p className={styles.generalErrorMessage}>{error}</p>}
-      </form>
-    </div>
+          <Controller
+            name="password"
+            control={control}
+            rules={{ required: 'Введите пароль' }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Пароль"
+                type="password"
+                margin="normal"
+                error={!!errors.password}
+                helperText={errors.password?.message}
+                placeholder="Введите ваш пароль"
+              />
+            )}
+          />
+
+          {authStore.registrationError && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {authStore.registrationError}
+            </Alert>
+          )}
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            disabled={authStore.isRegistrationLoading}
+            sx={{ mt: 3, py: 1.5 }}
+          >
+            {authStore.isRegistrationLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              'Зарегистрироваться'
+            )}
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
   );
-};
+});
 
 export default RegistrationForm;

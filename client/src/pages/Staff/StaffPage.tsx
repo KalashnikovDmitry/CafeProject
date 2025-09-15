@@ -1,13 +1,13 @@
-import { FC } from "react"
-import StaffList from "../../components/StaffList/StaffList";
-import style from './style.module.scss';
+import React from 'react';
+import { Box } from '@mui/material';
+import StaffList from '../../components/StaffList/StaffList';
 
-const StaffPage:FC = () => {
-    return (
-        <div className={style.mTopStaff}>
-            <StaffList/>
-        </div>
-    );
+const StaffPage: React.FC = () => {
+  return (
+    <Box sx={{ pt: 2 }}>
+      <StaffList />
+    </Box>
+  );
 };
 
 export default StaffPage;
