@@ -1,9 +1,18 @@
 import { makeAutoObservable } from 'mobx';
 import axios from 'axios';
-import { IStaff } from '../models/IStaff';
+import { IMenu } from '../models/IMenu';
 
-export class StaffStore {
-  staffs: IStaff[] = [];
+interface MenuData {
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  image: string;
+  isAvailable: boolean;
+}
+
+export class MenuStore {
+  menuItems: IMenu[] = [];
   isLoading: boolean = false;
   error: string = '';
 
@@ -11,7 +20,7 @@ export class StaffStore {
     makeAutoObservable(this);
   }
 
-  async fetchStaffs() {
+  async fetchMenuItems() {
     try {
       this.isLoading = true;
       this.error = '';
@@ -23,8 +32,8 @@ export class StaffStore {
         },
       };
       
-      const response = await axios.get<IStaff[]>('http://localhost:5000/admin/staffs', config);
-      this.staffs = response.data;
+      const response = await axios.get<IMenu[]>('http://localhost:5000/admin/menu', config);
+      this.menuItems = response.data;
       this.isLoading = false;
       
       return response.data;
@@ -36,7 +45,7 @@ export class StaffStore {
     }
   }
 
-  async createStaff(staffData: IStaff) {
+  async createMenuItem(menuData: MenuData) {
     try {
       this.isLoading = true;
       this.error = '';
@@ -48,8 +57,8 @@ export class StaffStore {
         },
       };
       
-      const response = await axios.post<IStaff>('http://localhost:5000/admin/staffs', staffData, config);
-      this.staffs.push(response.data);
+      const response = await axios.post<IMenu>('http://localhost:5000/admin/menu', menuData, config);
+      this.menuItems.push(response.data);
       this.isLoading = false;
       
       return response.data;
@@ -61,7 +70,7 @@ export class StaffStore {
     }
   }
 
-  async updateStaff(id: number, staffData: IStaff) {
+  async updateMenuItem(id: number, menuData: MenuData) {
     try {
       this.isLoading = true;
       this.error = '';
@@ -73,10 +82,10 @@ export class StaffStore {
         },
       };
       
-      const response = await axios.put<IStaff>(`http://localhost:5000/admin/staffs/${id}`, staffData, config);
-      const index = this.staffs.findIndex(staff => staff.id === id);
+      const response = await axios.put<IMenu>(`http://localhost:5000/admin/menu/${id}`, menuData, config);
+      const index = this.menuItems.findIndex(item => item.id === id);
       if (index !== -1) {
-        this.staffs[index] = response.data;
+        this.menuItems[index] = response.data;
       }
       this.isLoading = false;
       
@@ -89,7 +98,7 @@ export class StaffStore {
     }
   }
 
-  async deleteStaff(id: number) {
+  async deleteMenuItem(id: number) {
     try {
       this.isLoading = true;
       this.error = '';
@@ -101,8 +110,8 @@ export class StaffStore {
         },
       };
       
-      await axios.delete(`http://localhost:5000/admin/staffs/${id}`, config);
-      this.staffs = this.staffs.filter(staff => staff.id !== id);
+      await axios.delete(`http://localhost:5000/admin/menu/${id}`, config);
+      this.menuItems = this.menuItems.filter(item => item.id !== id);
       this.isLoading = false;
       
     } catch (e: any) {

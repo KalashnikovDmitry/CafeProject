@@ -1,13 +1,9 @@
 import React from 'react';
-import { Box } from '@mui/material';
-import StaffList from '../../components/StaffList/StaffList';
+import { Navigate } from 'react-router-dom';
 
 const StaffPage: React.FC = () => {
-  return (
-    <Box sx={{ pt: 2 }}>
-      <StaffList />
-    </Box>
-  );
+  // Перенаправляем на новую админ-панель
+  return <Navigate to="/admin/staff" replace />;
 };
 
 export default StaffPage;

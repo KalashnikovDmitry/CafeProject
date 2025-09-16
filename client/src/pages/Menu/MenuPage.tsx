@@ -1,13 +1,13 @@
 import React from 'react';
 import { Container } from '@mui/material';
-import NewsDisplay from '../../components/NewsDisplay/NewsDisplay';
+import MenuDisplay from '../../components/MenuDisplay/MenuDisplay';
 
-const NewsPage: React.FC = () => {
+const MenuPage: React.FC = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <NewsDisplay />
+      <MenuDisplay />
     </Container>
   );
 };
 
-export default NewsPage;
+export default MenuPage;

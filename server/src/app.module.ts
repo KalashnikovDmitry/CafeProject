@@ -9,6 +9,8 @@ import { News } from "./news/news.model";
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { BookingModule } from './booking/booking.module';
+import { MenuModule } from './menu/menu.module';
+import { Menu } from "./menu/menu.model";
 import * as path from 'path';
 import { Booking } from "./booking/booking.model";
 
@@ -29,7 +31,7 @@ import { Booking } from "./booking/booking.model";
           username: process.env.POSTGRES_USER,
           password: process.env.POSTGRES_PASSWORD,
           database: process.env.POSTGRES_DB,
-          models: [Staff, News, Booking],
+          models: [Staff, News, Booking, Menu],
           autoLoadModels: true
         }),
         StaffModule,
@@ -37,6 +39,7 @@ import { Booking } from "./booking/booking.model";
         NewsModule,
         FilesModule,
         BookingModule,
+        MenuModule,
       ],
 })
 export class AppModule {}

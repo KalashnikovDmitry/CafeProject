@@ -1,9 +1,9 @@
 import { makeAutoObservable } from 'mobx';
 import axios from 'axios';
-import { IStaff } from '../models/IStaff';
+import { IBooking } from '../models/IBooking';
 
-export class StaffStore {
-  staffs: IStaff[] = [];
+export class BookingStore {
+  bookings: IBooking[] = [];
   isLoading: boolean = false;
   error: string = '';
 
@@ -11,7 +11,7 @@ export class StaffStore {
     makeAutoObservable(this);
   }
 
-  async fetchStaffs() {
+  async fetchBookings() {
     try {
       this.isLoading = true;
       this.error = '';
@@ -23,8 +23,8 @@ export class StaffStore {
         },
       };
       
-      const response = await axios.get<IStaff[]>('http://localhost:5000/admin/staffs', config);
-      this.staffs = response.data;
+      const response = await axios.get<IBooking[]>('http://localhost:5000/admin/bookings', config);
+      this.bookings = response.data;
       this.isLoading = false;
       
       return response.data;
@@ -36,7 +36,7 @@ export class StaffStore {
     }
   }
 
-  async createStaff(staffData: IStaff) {
+  async createBooking(bookingData: Omit<IBooking, 'id'>) {
     try {
       this.isLoading = true;
       this.error = '';
@@ -48,8 +48,8 @@ export class StaffStore {
         },
       };
       
-      const response = await axios.post<IStaff>('http://localhost:5000/admin/staffs', staffData, config);
-      this.staffs.push(response.data);
+      const response = await axios.post<IBooking>('http://localhost:5000/admin/bookings', bookingData, config);
+      this.bookings.push(response.data);
       this.isLoading = false;
       
       return response.data;
@@ -61,7 +61,7 @@ export class StaffStore {
     }
   }
 
-  async updateStaff(id: number, staffData: IStaff) {
+  async updateBooking(id: number, bookingData: Partial<IBooking>) {
     try {
       this.isLoading = true;
       this.error = '';
@@ -73,10 +73,10 @@ export class StaffStore {
         },
       };
       
-      const response = await axios.put<IStaff>(`http://localhost:5000/admin/staffs/${id}`, staffData, config);
-      const index = this.staffs.findIndex(staff => staff.id === id);
+      const response = await axios.put<IBooking>(`http://localhost:5000/admin/bookings/${id}`, bookingData, config);
+      const index = this.bookings.findIndex(booking => booking.id === id);
       if (index !== -1) {
-        this.staffs[index] = response.data;
+        this.bookings[index] = response.data;
       }
       this.isLoading = false;
       
@@ -89,7 +89,7 @@ export class StaffStore {
     }
   }
 
-  async deleteStaff(id: number) {
+  async deleteBooking(id: number) {
     try {
       this.isLoading = true;
       this.error = '';
@@ -101,8 +101,8 @@ export class StaffStore {
         },
       };
       
-      await axios.delete(`http://localhost:5000/admin/staffs/${id}`, config);
-      this.staffs = this.staffs.filter(staff => staff.id !== id);
+      await axios.delete(`http://localhost:5000/admin/bookings/${id}`, config);
+      this.bookings = this.bookings.filter(booking => booking.id !== id);
       this.isLoading = false;
       
     } catch (e: any) {

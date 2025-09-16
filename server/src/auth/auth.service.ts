@@ -25,7 +25,9 @@ export class AuthService {
         }
         const hashPassword = await bcrypt.hash(staffDto.password, 5);
         const user = await this.staffService.createStaff({...staffDto, password: hashPassword})
-        return this.generateToken(user)
+        // Получаем полный объект пользователя для генерации токена
+        const fullUser = await this.staffService.getStaffByEmail(user.email)
+        return this.generateToken(fullUser)
     }
 
     private async generateToken(user: Staff) {

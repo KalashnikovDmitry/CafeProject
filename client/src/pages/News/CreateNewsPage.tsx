@@ -1,13 +1,9 @@
 import React from 'react';
-import { Box } from '@mui/material';
-import NewNewsForm from '../../components/NewNewsForm/NewNewsForm';
+import { Navigate } from 'react-router-dom';
 
 const CreateNewsPage: React.FC = () => {
-  return (
-    <Box>
-      <NewNewsForm />
-    </Box>
-  );
+  // Перенаправляем на новую админ-панель
+  return <Navigate to="/admin/news" replace />;
 };
 
 export default CreateNewsPage;
