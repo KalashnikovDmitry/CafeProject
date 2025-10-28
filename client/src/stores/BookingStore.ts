@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import axios from 'axios';
 import { IBooking } from '../models/IBooking';
+import { mockBookings } from '../data/mockData';
 
 export class BookingStore {
   bookings: IBooking[] = [];
@@ -9,6 +9,11 @@ export class BookingStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.loadMockData();
+  }
+
+  loadMockData() {
+    this.bookings = [...mockBookings];
   }
 
   async fetchBookings() {
@@ -16,20 +21,15 @@ export class BookingStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      const response = await axios.get<IBooking[]>('http://localhost:5000/admin/bookings', config);
-      this.bookings = response.data;
+      this.bookings = [...mockBookings];
       this.isLoading = false;
       
-      return response.data;
+      return this.bookings;
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);
@@ -41,20 +41,20 @@ export class BookingStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      const newBooking: IBooking = {
+        id: Math.max(...this.bookings.map(item => item.id)) + 1,
+        ...bookingData
       };
       
-      const response = await axios.post<IBooking>('http://localhost:5000/admin/bookings', bookingData, config);
-      this.bookings.push(response.data);
+      this.bookings.push(newBooking);
       this.isLoading = false;
       
-      return response.data;
+      return newBooking;
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);
@@ -66,23 +66,21 @@ export class BookingStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 300));
       
-      const response = await axios.put<IBooking>(`http://localhost:5000/admin/bookings/${id}`, bookingData, config);
       const index = this.bookings.findIndex(booking => booking.id === id);
       if (index !== -1) {
-        this.bookings[index] = response.data;
+        this.bookings[index] = {
+          ...this.bookings[index],
+          ...bookingData
+        };
       }
       this.isLoading = false;
       
-      return response.data;
+      return this.bookings[index];
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);
@@ -94,19 +92,72 @@ export class BookingStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 300));
       
-      await axios.delete(`http://localhost:5000/admin/bookings/${id}`, config);
       this.bookings = this.bookings.filter(booking => booking.id !== id);
       this.isLoading = false;
       
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
+      this.error = errorMessage;
+      this.isLoading = false;
+      throw new Error(errorMessage);
+    }
+  }
+
+  async getAvailableTables(date: string, time: string) {
+    try {
+      this.isLoading = true;
+      this.error = '';
+      
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      // Фильтруем забронированные столы на указанную дату и время
+      const bookedTableNumbers = this.bookings
+        .filter(booking => 
+          booking.date.toISOString().split('T')[0] === date && 
+          booking.time === time
+        )
+        .map(booking => booking.tableNumber);
+      
+      // Возвращаем доступные столы (все столы кроме забронированных)
+      const availableTables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        .filter(tableNumber => !bookedTableNumbers.includes(tableNumber))
+        .map(tableNumber => ({
+          number: tableNumber,
+          capacity: Math.floor(Math.random() * 6) + 2, // 2-8 мест
+          floor: Math.floor(Math.random() * 2) + 1, // 1-2 этаж
+          section: ['VIP', 'Основной зал', 'Терраса'][Math.floor(Math.random() * 3)]
+        }));
+      
+      this.isLoading = false;
+      return availableTables;
+    } catch (e: any) {
+      const errorMessage = e.message || "An unknown error occurred";
+      this.error = errorMessage;
+      this.isLoading = false;
+      throw new Error(errorMessage);
+    }
+  }
+
+  async getBookingsByDate(date: string) {
+    try {
+      this.isLoading = true;
+      this.error = '';
+      
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      const bookingsForDate = this.bookings.filter(booking => 
+        booking.date.toISOString().split('T')[0] === date
+      );
+      
+      this.isLoading = false;
+      return bookingsForDate;
+    } catch (e: any) {
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);

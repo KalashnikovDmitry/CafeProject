@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import axios from 'axios';
 import { IStaff } from '../models/IStaff';
+import { mockStaff } from '../data/mockData';
 
 export class StaffStore {
   staffs: IStaff[] = [];
@@ -9,6 +9,11 @@ export class StaffStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.loadMockData();
+  }
+
+  loadMockData() {
+    this.staffs = [...mockStaff];
   }
 
   async fetchStaffs() {
@@ -16,20 +21,15 @@ export class StaffStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      const response = await axios.get<IStaff[]>('http://localhost:5000/admin/staffs', config);
-      this.staffs = response.data;
+      this.staffs = [...mockStaff];
       this.isLoading = false;
       
-      return response.data;
+      return this.staffs;
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);
@@ -41,20 +41,20 @@ export class StaffStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      const newStaff: IStaff = {
+        id: Math.max(...this.staffs.map(item => item.id)) + 1,
+        ...staffData
       };
       
-      const response = await axios.post<IStaff>('http://localhost:5000/admin/staffs', staffData, config);
-      this.staffs.push(response.data);
+      this.staffs.push(newStaff);
       this.isLoading = false;
       
-      return response.data;
+      return newStaff;
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);
@@ -66,23 +66,21 @@ export class StaffStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 300));
       
-      const response = await axios.put<IStaff>(`http://localhost:5000/admin/staffs/${id}`, staffData, config);
       const index = this.staffs.findIndex(staff => staff.id === id);
       if (index !== -1) {
-        this.staffs[index] = response.data;
+        this.staffs[index] = {
+          ...this.staffs[index],
+          ...staffData
+        };
       }
       this.isLoading = false;
       
-      return response.data;
+      return this.staffs[index];
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);
@@ -94,19 +92,14 @@ export class StaffStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 300));
       
-      await axios.delete(`http://localhost:5000/admin/staffs/${id}`, config);
       this.staffs = this.staffs.filter(staff => staff.id !== id);
       this.isLoading = false;
       
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);

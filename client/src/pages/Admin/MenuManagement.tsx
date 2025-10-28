@@ -25,14 +25,14 @@ import {
   Add,
   Edit,
   Delete,
-  Restaurant,
 } from '@mui/icons-material';
 import { mockMenu } from '../../data/mockData';
+import { IMenu } from '../../models/IMenu';
 
 const MenuManagement: React.FC = () => {
   const [menuItems, setMenuItems] = useState(mockMenu);
   const [openDialog, setOpenDialog] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
+  const [editingItem, setEditingItem] = useState<IMenu | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -44,7 +44,7 @@ const MenuManagement: React.FC = () => {
 
   const categories = ['Основные блюда', 'Салаты', 'Десерты', 'Напитки'];
 
-  const handleOpenDialog = (item?: any) => {
+  const handleOpenDialog = (item?: IMenu) => {
     if (item) {
       setEditingItem(item);
       setFormData({

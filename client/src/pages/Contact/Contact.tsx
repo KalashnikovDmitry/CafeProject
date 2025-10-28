@@ -28,7 +28,7 @@ const ContactPage: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleReservation = () => {
-    window.open('tel:+375291119996', '_self');
+    navigate('/booking');
   };
 
   const contactInfo = [

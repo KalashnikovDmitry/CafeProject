@@ -22,36 +22,37 @@ import {
   ShoppingCart,
 } from '@mui/icons-material';
 import { mockMenu } from '../../data/mockData';
+import { IMenu } from '../../models/IMenu';
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
+// interface TabPanelProps {
+//   children?: React.ReactNode;
+//   index: number;
+//   value: number;
+// }
 
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
+// function TabPanel(props: TabPanelProps) {
+//   const { children, value, index, ...other } = props;
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`menu-tabpanel-${index}`}
-      aria-labelledby={`menu-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
-    </div>
-  );
-}
+//   return (
+//     <div
+//       role="tabpanel"
+//       hidden={value !== index}
+//       id={`menu-tabpanel-${index}`}
+//       aria-labelledby={`menu-tab-${index}`}
+//       {...other}
+//     >
+//       {value === index && (
+//         <Box sx={{ p: 3 }}>
+//           {children}
+//         </Box>
+//       )}
+//     </div>
+//   );
+// }
 
 const MenuDisplay: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState(0);
-  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [selectedItem, setSelectedItem] = useState<IMenu | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
 
   const categories = ['Все', 'Основные блюда', 'Салаты', 'Десерты', 'Напитки'];
@@ -60,11 +61,11 @@ const MenuDisplay: React.FC = () => {
     ? mockMenu.filter(item => item.isAvailable)
     : mockMenu.filter(item => item.isAvailable && item.category === categories[selectedCategory]);
 
-  const handleCategoryChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleCategoryChange = (_event: React.SyntheticEvent, newValue: number) => {
     setSelectedCategory(newValue);
   };
 
-  const handleItemClick = (item: any) => {
+  const handleItemClick = (item: IMenu) => {
     setSelectedItem(item);
     setOpenDialog(true);
   };
@@ -74,7 +75,7 @@ const MenuDisplay: React.FC = () => {
     setSelectedItem(null);
   };
 
-  const getCategoryColor = (category: string) => {
+  const getCategoryColor = (category: string): 'primary' | 'success' | 'secondary' | 'info' | 'default' => {
     switch (category) {
       case 'Основные блюда': return 'primary';
       case 'Салаты': return 'success';
@@ -145,7 +146,7 @@ const MenuDisplay: React.FC = () => {
                   </Typography>
                   <Chip
                     label={item.category}
-                    color={getCategoryColor(item.category) as any}
+                    color={getCategoryColor(item.category)}
                     size="small"
                   />
                 </Box>
@@ -223,7 +224,7 @@ const MenuDisplay: React.FC = () => {
                     <Box display="flex" alignItems="center" gap={2} mb={2}>
                       <Chip
                         label={selectedItem.category}
-                        color={getCategoryColor(selectedItem.category) as any}
+                        color={getCategoryColor(selectedItem.category)}
                       />
                       <Typography variant="h4" color="primary">
                         ${selectedItem.price}

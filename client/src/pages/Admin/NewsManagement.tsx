@@ -19,15 +19,15 @@ import {
   Add,
   Edit,
   Delete,
-  Article,
   Person,
 } from '@mui/icons-material';
 import { mockNews, mockStaff } from '../../data/mockData';
+import { INews } from '../../models/INews';
 
 const NewsManagement: React.FC = () => {
   const [newsItems, setNewsItems] = useState(mockNews);
   const [openDialog, setOpenDialog] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
+  const [editingItem, setEditingItem] = useState<INews | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -35,7 +35,7 @@ const NewsManagement: React.FC = () => {
     staffId: 1,
   });
 
-  const handleOpenDialog = (item?: any) => {
+  const handleOpenDialog = (item?: INews) => {
     if (item) {
       setEditingItem(item);
       setFormData({

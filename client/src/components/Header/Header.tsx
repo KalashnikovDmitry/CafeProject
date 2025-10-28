@@ -17,7 +17,6 @@ import {
   useTheme,
   useMediaQuery,
   Fade,
-  Slide,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -28,8 +27,6 @@ import {
   Article as NewsIcon,
   Phone as PhoneIcon,
   TableRestaurant as TableIcon,
-  Login as LoginIcon,
-  PersonAdd as RegisterIcon,
 } from '@mui/icons-material';
 
 const Header: React.FC = () => {
@@ -75,6 +72,7 @@ const Header: React.FC = () => {
   const menuItems = [
     { path: '/main', label: 'Главная', icon: <HomeIcon /> },
     { path: '/menu', label: 'Меню', icon: <MenuBookIcon /> },
+    { path: '/booking', label: 'Бронирование', icon: <TableIcon /> },
     { path: '/contact-us', label: 'Контакты', icon: <ContactIcon /> },
     { path: '/news', label: 'Новости', icon: <NewsIcon /> },
   ];
@@ -93,7 +91,7 @@ const Header: React.FC = () => {
         {menuItems.map((item) => (
           <ListItem
             key={item.path}
-            button
+            component="div"
             onClick={() => handleNavigation(item.path)}
             sx={{
               backgroundColor: location.pathname === item.path ? 'primary.main' : 'transparent',
@@ -101,6 +99,7 @@ const Header: React.FC = () => {
               mb: 1,
               mx: 1,
               borderRadius: 2,
+              cursor: 'pointer',
               '&:hover': {
                 backgroundColor: 'primary.main',
                 color: 'white',
@@ -115,27 +114,6 @@ const Header: React.FC = () => {
             <ListItemText primary={item.label} />
           </ListItem>
         ))}
-        <ListItem
-          button
-          onClick={() => handleNavigation('/auth/login')}
-          sx={{
-            backgroundColor: 'secondary.main',
-            color: 'white',
-            mb: 1,
-            mx: 1,
-            borderRadius: 2,
-            '&:hover': {
-              backgroundColor: 'secondary.dark',
-              transform: 'translateX(8px)',
-            },
-            transition: 'all 0.3s ease',
-          }}
-        >
-          <ListItemIcon sx={{ color: 'inherit' }}>
-            <LoginIcon />
-          </ListItemIcon>
-          <ListItemText primary="Вход" />
-        </ListItem>
       </List>
     </Box>
   );
@@ -271,45 +249,6 @@ const Header: React.FC = () => {
               />
             </Fade>
 
-            {/* Auth Buttons */}
-            {!isMobile && (
-              <Box sx={{ display: 'flex', gap: 1 }}>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  startIcon={<LoginIcon />}
-                  onClick={() => navigate('/auth/login')}
-                  sx={{
-                    borderColor: 'primary.main',
-                    color: 'primary.main',
-                    '&:hover': {
-                      backgroundColor: 'primary.main',
-                      color: 'white',
-                      transform: 'translateY(-2px)',
-                    },
-                    transition: 'all 0.3s ease',
-                  }}
-                >
-                  Вход
-                </Button>
-                <Button
-                  variant="contained"
-                  size="small"
-                  startIcon={<RegisterIcon />}
-                  onClick={() => navigate('/auth/registration')}
-                  sx={{
-                    backgroundColor: 'primary.main',
-                    '&:hover': {
-                      backgroundColor: 'primary.dark',
-                      transform: 'translateY(-2px)',
-                    },
-                    transition: 'all 0.3s ease',
-                  }}
-                >
-                  Регистрация
-                </Button>
-              </Box>
-            )}
 
             {/* Mobile Menu Button */}
             {isMobile && (

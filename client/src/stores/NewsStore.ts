@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import axios from 'axios';
 import { INews } from '../models/INews';
+import { mockNews, mockStaff } from '../data/mockData';
 
 interface NewsData {
   title: string;
@@ -24,6 +24,12 @@ export class NewsStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.loadMockData();
+  }
+
+  loadMockData() {
+    this.news = [...mockNews];
+    this.newsList = [...mockNews];
   }
 
   // Get news list methods
@@ -32,14 +38,16 @@ export class NewsStore {
       this.isGetNewsLoading = true;
       this.getNewsError = '';
       
-      const response = await axios.get<INews[]>('http://localhost:5000/news');
-      this.newsList = response.data;
-      this.news = response.data;
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      this.newsList = [...mockNews];
+      this.news = [...mockNews];
       this.isGetNewsLoading = false;
       
-      return response.data;
+      return this.newsList;
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.getNewsError = errorMessage;
       this.isGetNewsLoading = false;
       throw new Error(errorMessage);
@@ -51,20 +59,15 @@ export class NewsStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      const response = await axios.get<INews[]>('http://localhost:5000/admin/news', config);
-      this.news = response.data;
+      this.news = [...mockNews];
       this.isLoading = false;
       
-      return response.data;
+      return this.news;
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);
@@ -77,23 +80,24 @@ export class NewsStore {
       this.isPostNewsLoading = true;
       this.postNewsError = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      const newNews: INews = {
+        id: Math.max(...this.news.map(item => item.id)) + 1,
+        ...newsData,
+        staffId: 1, // Администратор по умолчанию
+        author: mockStaff[0]
       };
       
-      const response = await axios.post<INews>('http://localhost:5000/news', newsData, config);
-      this.postedNews = response.data;
+      this.postedNews = newNews;
+      this.newsList.unshift(newNews);
+      this.news.unshift(newNews);
       this.isPostNewsLoading = false;
       
-      // Add to news list
-      this.newsList.unshift(response.data);
-      
-      return response.data;
+      return newNews;
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.postNewsError = errorMessage;
       this.isPostNewsLoading = false;
       throw new Error(errorMessage);
@@ -118,23 +122,21 @@ export class NewsStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 300));
       
-      const response = await axios.put<INews>(`http://localhost:5000/admin/news/${id}`, newsData, config);
       const index = this.news.findIndex(news => news.id === id);
       if (index !== -1) {
-        this.news[index] = response.data;
+        this.news[index] = {
+          ...this.news[index],
+          ...newsData
+        };
       }
       this.isLoading = false;
       
-      return response.data;
+      return this.news[index];
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);
@@ -146,19 +148,15 @@ export class NewsStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 300));
       
-      await axios.delete(`http://localhost:5000/admin/news/${id}`, config);
       this.news = this.news.filter(news => news.id !== id);
+      this.newsList = this.newsList.filter(news => news.id !== id);
       this.isLoading = false;
       
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);

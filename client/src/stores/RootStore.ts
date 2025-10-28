@@ -3,6 +3,7 @@ import { AuthStore } from './AuthStore';
 import { NewsStore } from './NewsStore';
 import { BookingStore } from './BookingStore';
 import { MenuStore } from './MenuStore';
+import { TableStore } from './TableStore';
 
 export class RootStore {
   staffStore: StaffStore;
@@ -10,6 +11,7 @@ export class RootStore {
   newsStore: NewsStore;
   bookingStore: BookingStore;
   menuStore: MenuStore;
+  tableStore: TableStore;
 
   constructor() {
     this.staffStore = new StaffStore();
@@ -17,6 +19,7 @@ export class RootStore {
     this.newsStore = new NewsStore();
     this.bookingStore = new BookingStore();
     this.menuStore = new MenuStore();
+    this.tableStore = new TableStore();
   }
 }
 

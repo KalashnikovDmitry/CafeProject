@@ -30,3 +30,4 @@ export const useAuthStore = () => useStore().authStore;
 export const useNewsStore = () => useStore().newsStore;
 export const useBookingStore = () => useStore().bookingStore;
 export const useMenuStore = () => useStore().menuStore;
+export const useTableStore = () => useStore().tableStore;

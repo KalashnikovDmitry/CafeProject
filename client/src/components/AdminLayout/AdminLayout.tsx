@@ -12,7 +12,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Avatar,
   Menu,
   MenuItem,
   useTheme,
@@ -25,6 +24,7 @@ import {
   Event,
   Article,
   Restaurant,
+  TableRestaurant,
   Logout,
   AccountCircle,
 } from '@mui/icons-material';
@@ -69,6 +69,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = observer(({ children }) => {
     { text: 'Панель управления', icon: <Dashboard />, path: '/admin' },
     { text: 'Сотрудники', icon: <People />, path: '/admin/staff' },
     { text: 'Бронирования', icon: <Event />, path: '/admin/bookings' },
+    { text: 'Столы', icon: <TableRestaurant />, path: '/admin/tables' },
     { text: 'Новости', icon: <Article />, path: '/admin/news' },
     { text: 'Меню', icon: <Restaurant />, path: '/admin/menu' },
   ];

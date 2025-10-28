@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import axios from 'axios';
 import { IMenu } from '../models/IMenu';
+import { mockMenu } from '../data/mockData';
 
 interface MenuData {
   name: string;
@@ -18,6 +18,11 @@ export class MenuStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.loadMockData();
+  }
+
+  loadMockData() {
+    this.menuItems = [...mockMenu];
   }
 
   async fetchMenuItems() {
@@ -25,20 +30,15 @@ export class MenuStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      const response = await axios.get<IMenu[]>('http://localhost:5000/admin/menu', config);
-      this.menuItems = response.data;
+      this.menuItems = [...mockMenu];
       this.isLoading = false;
       
-      return response.data;
+      return this.menuItems;
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);
@@ -50,20 +50,22 @@ export class MenuStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      const newItem: IMenu = {
+        id: Math.max(...this.menuItems.map(item => item.id)) + 1,
+        ...menuData,
+        createdAt: new Date(),
+        updatedAt: new Date()
       };
       
-      const response = await axios.post<IMenu>('http://localhost:5000/admin/menu', menuData, config);
-      this.menuItems.push(response.data);
+      this.menuItems.push(newItem);
       this.isLoading = false;
       
-      return response.data;
+      return newItem;
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);
@@ -75,23 +77,22 @@ export class MenuStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 300));
       
-      const response = await axios.put<IMenu>(`http://localhost:5000/admin/menu/${id}`, menuData, config);
       const index = this.menuItems.findIndex(item => item.id === id);
       if (index !== -1) {
-        this.menuItems[index] = response.data;
+        this.menuItems[index] = {
+          ...this.menuItems[index],
+          ...menuData,
+          updatedAt: new Date()
+        };
       }
       this.isLoading = false;
       
-      return response.data;
+      return this.menuItems[index];
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);
@@ -103,19 +104,14 @@ export class MenuStore {
       this.isLoading = true;
       this.error = '';
       
-      const token = sessionStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      // Имитируем задержку API
+      await new Promise(resolve => setTimeout(resolve, 300));
       
-      await axios.delete(`http://localhost:5000/admin/menu/${id}`, config);
       this.menuItems = this.menuItems.filter(item => item.id !== id);
       this.isLoading = false;
       
     } catch (e: any) {
-      const errorMessage = e.response?.data?.message || e.message || "An unknown error occurred";
+      const errorMessage = e.message || "An unknown error occurred";
       this.error = errorMessage;
       this.isLoading = false;
       throw new Error(errorMessage);

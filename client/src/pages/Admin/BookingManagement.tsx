@@ -3,8 +3,6 @@ import {
   Box,
   Typography,
   Grid,
-  Card,
-  CardContent,
   Button,
   Dialog,
   DialogTitle,
@@ -29,17 +27,17 @@ import {
   Add,
   Edit,
   Delete,
-  Event,
   Person,
   Phone,
   TableRestaurant,
 } from '@mui/icons-material';
 import { mockBookings, mockStaff } from '../../data/mockData';
+import { IBooking } from '../../models/IBooking';
 
 const BookingManagement: React.FC = () => {
   const [bookings, setBookings] = useState(mockBookings);
   const [openDialog, setOpenDialog] = useState(false);
-  const [editingBooking, setEditingBooking] = useState<any>(null);
+  const [editingBooking, setEditingBooking] = useState<IBooking | null>(null);
   const [formData, setFormData] = useState({
     tableNumber: '',
     date: '',
@@ -50,7 +48,7 @@ const BookingManagement: React.FC = () => {
     createdBy: 'staff' as 'staff' | 'user',
   });
 
-  const handleOpenDialog = (booking?: any) => {
+  const handleOpenDialog = (booking?: IBooking) => {
     if (booking) {
       setEditingBooking(booking);
       setFormData({

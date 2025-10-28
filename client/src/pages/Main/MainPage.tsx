@@ -10,7 +10,6 @@ import {
   Grid,
   Paper,
   Chip,
-  IconButton,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
@@ -31,8 +30,7 @@ const MainPage: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleReservation = () => {
-    // Здесь можно добавить логику для бронирования столика
-    console.log('Бронирование столика');
+    navigate('/booking');
   };
 
   const features = [

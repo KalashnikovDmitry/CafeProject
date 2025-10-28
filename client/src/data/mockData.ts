@@ -213,3 +213,136 @@ export const mockBookings = [
     createdBy: 'user' as const
   }
 ];
+
+export const mockTables = [
+  {
+    id: 1,
+    number: 1,
+    capacity: 4,
+    floor: 1,
+    section: 'Основной зал',
+    isActive: true,
+    x: 100,
+    y: 100,
+    width: 80,
+    height: 80,
+    shape: 'circle' as const
+  },
+  {
+    id: 2,
+    number: 2,
+    capacity: 2,
+    floor: 1,
+    section: 'Основной зал',
+    isActive: true,
+    x: 200,
+    y: 100,
+    width: 60,
+    height: 60,
+    shape: 'circle' as const
+  },
+  {
+    id: 3,
+    number: 3,
+    capacity: 6,
+    floor: 1,
+    section: 'VIP',
+    isActive: true,
+    x: 300,
+    y: 100,
+    width: 100,
+    height: 100,
+    shape: 'oval' as const
+  },
+  {
+    id: 4,
+    number: 4,
+    capacity: 4,
+    floor: 1,
+    section: 'Основной зал',
+    isActive: true,
+    x: 100,
+    y: 200,
+    width: 80,
+    height: 80,
+    shape: 'rectangle' as const
+  },
+  {
+    id: 5,
+    number: 5,
+    capacity: 8,
+    floor: 1,
+    section: 'VIP',
+    isActive: true,
+    x: 200,
+    y: 200,
+    width: 120,
+    height: 120,
+    shape: 'oval' as const
+  },
+  {
+    id: 6,
+    number: 6,
+    capacity: 2,
+    floor: 2,
+    section: 'Терраса',
+    isActive: true,
+    x: 100,
+    y: 100,
+    width: 60,
+    height: 60,
+    shape: 'circle' as const
+  },
+  {
+    id: 7,
+    number: 7,
+    capacity: 4,
+    floor: 2,
+    section: 'Терраса',
+    isActive: true,
+    x: 200,
+    y: 100,
+    width: 80,
+    height: 80,
+    shape: 'rectangle' as const
+  },
+  {
+    id: 8,
+    number: 8,
+    capacity: 6,
+    floor: 2,
+    section: 'Основной зал',
+    isActive: true,
+    x: 300,
+    y: 100,
+    width: 100,
+    height: 100,
+    shape: 'oval' as const
+  },
+  {
+    id: 9,
+    number: 9,
+    capacity: 2,
+    floor: 2,
+    section: 'Терраса',
+    isActive: false,
+    x: 100,
+    y: 200,
+    width: 60,
+    height: 60,
+    shape: 'circle' as const
+  },
+  {
+    id: 10,
+    number: 10,
+    capacity: 4,
+    floor: 2,
+    section: 'Основной зал',
+    isActive: true,
+    x: 200,
+    y: 200,
+    width: 80,
+    height: 80,
+    shape: 'rectangle' as const
+  }
+];
